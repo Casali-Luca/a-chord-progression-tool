@@ -207,11 +207,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                 card.appendChild(divCanvas);
                 sheetsContainer.appendChild(card);
                 infoBtn.addEventListener('click', () => {
-                    const isHidden = miniScaleContainer.style.display === 'none';
-                    miniScaleContainer.style.display = isHidden ? 'block' : 'none';
-                    if (isHidden && miniCanvasDiv.children.length === 0) {
-                        renderScaleMiniSheet(`mini-canvas-${index}`, rootKey, selectedModeKey, accidentalMode, selectedClef, baseOctave, VF, noteToPitch, pitchToVexSharp, pitchToVexFlat, modeDefinitions);
-                    }
+                const isHidden = miniScaleContainer.style.display === 'none';
+                miniScaleContainer.style.display = isHidden ? 'block' : 'none';
+                
+                if (isHidden && miniCanvasDiv.children.length === 0) {
+                    renderScaleMiniSheet(
+                        `mini-canvas-${index}`, 
+                        rootKey, 
+                        selectedModeKey, 
+                        accidentalMode, 
+                        selectedClef, 
+                        baseOctave, 
+                        tuningMode,
+                        VF, 
+                        noteToPitch, 
+                        pitchToVexSharp, 
+                        pitchToVexFlat, 
+                        modeDefinitions
+                    );
+                }
                 });
                 const renderHeight = (tuningMode !== 'notes') ? 160 : 130;
                 const renderer = new VF.Renderer(divCanvas, VF.Renderer.Backends.SVG);

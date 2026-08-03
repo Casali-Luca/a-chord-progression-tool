@@ -1,4 +1,19 @@
-export function renderScaleMiniSheet(containerId, rootKey, selectedModeKey, accidentalMode, selectedClef, baseOctave, VF, noteToPitch, pitchToVexSharp, pitchToVexFlat, modeDefinitions) {
+import { getTabPositionsHumanized } from './tablature.js';
+
+export function renderScaleMiniSheet(
+    containerId, 
+    rootKey, 
+    selectedModeKey, 
+    accidentalMode, 
+    selectedClef, 
+    baseOctave, 
+    tuningMode, 
+    VF, 
+    noteToPitch, 
+    pitchToVexSharp, 
+    pitchToVexFlat, 
+    modeDefinitions
+) {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = '';
@@ -27,30 +42,65 @@ export function renderScaleMiniSheet(containerId, rootKey, selectedModeKey, acci
             accidental = 'b';
         }
 
-        return { key: `${rawNote}/${currentOctave}`, accidental };
+        return {
+            pitchIndex: noteIdx,
+            absolutePitch: absPitch,
+            key: `${rawNote}/${currentOctave}`,
+            octave: currentOctave,
+            accidental: accidental
+        };
     });
 
+    const renderHeight = (tuningMode !== 'notes') ? 150 : 110;
     const renderer = new VF.Renderer(container, VF.Renderer.Backends.SVG);
-    renderer.resize(400, 110);
+    renderer.resize(420, renderHeight);
     const context = renderer.getContext();
 
-    const stave = new VF.Stave(10, 0, 380);
-    stave.addClef(selectedClef).setContext(context).draw();
+    if (tuningMode === 'notes') {
+        // Pentagramma Standard
+        const stave = new VF.Stave(10, 0, 400);
+        stave.addClef(selectedClef).setContext(context).draw();
 
-    const vexNotes = scaleNotes.map(nObj => {
-        const sn = new VF.StaveNote({ keys: [nObj.key], duration: "q", clef: selectedClef });
-        if (nObj.accidental) sn.addModifier(new VF.Accidental(nObj.accidental), 0);
-        return sn;
-    });
+        const vexNotes = scaleNotes.map(nObj => {
+            const sn = new VF.StaveNote({ keys: [nObj.key], duration: "q", clef: selectedClef });
+            if (nObj.accidental) sn.addModifier(new VF.Accidental(nObj.accidental), 0);
+            return sn;
+        });
 
-    const voice = new VF.Voice({ num_beats: 7, beat_value: 4 });
-    voice.addTickables(vexNotes);
+        const voice = new VF.Voice({ num_beats: scaleNotes.length, beat_value: 4 });
+        voice.addTickables(vexNotes);
 
-    const formatter = new VF.Formatter();
-    if (typeof formatter.joinAndFormat === 'function') {
-        formatter.joinAndFormat([voice], 300);
+        const formatter = new VF.Formatter();
+        if (typeof formatter.joinAndFormat === 'function') {
+            formatter.joinAndFormat([voice], 320);
+        } else {
+            formatter.format([voice], 320);
+        }
+        voice.draw(context, stave);
+
     } else {
-        formatter.format([voice], 300);
+        // Tablatura
+        const strings = tuningMode.split(',');
+        const tabStave = new VF.TabStave(10, 10, 400);
+        tabStave.setNumLines(strings.length);
+        tabStave.setContext(context).draw();
+
+        const vexTabNotes = scaleNotes.map(nObj => {
+            const positions = getTabPositionsHumanized([nObj], strings, noteToPitch);
+            // Fallback se l'algoritmo non trova una posizione valida sulla tastiera
+            const validPositions = (positions && positions.length > 0) ? positions : [{ str: 1, fret: 0 }];
+            return new VF.TabNote({ positions: validPositions, duration: "q" });
+        });
+
+        const voice = new VF.Voice({ num_beats: scaleNotes.length, beat_value: 4 });
+        voice.addTickables(vexTabNotes);
+
+        const formatter = new VF.Formatter();
+        if (typeof formatter.joinAndFormat === 'function') {
+            formatter.joinAndFormat([voice], 320);
+        } else {
+            formatter.format([voice], 320);
+        }
+        voice.draw(context, tabStave);
     }
-    voice.draw(context, stave);
 }
