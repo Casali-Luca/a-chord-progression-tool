@@ -1,16 +1,33 @@
 {
-  "name": "a_c_prog_tool",
+  "name": "chord-progression-generator",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
+  "description": "A real-time chord progression generator featuring sheet music, guitar tabs, and custom modes.",
+  "main": "src/index.js",
   "type": "commonjs",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
+  "keywords": [
+    "music-theory",
+    "chord-progression",
+    "sheet-music",
+    "tabs",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.9.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
