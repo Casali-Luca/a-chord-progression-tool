@@ -33,7 +33,21 @@
                         </select>
                     </div>
                 </div>
-
+            <div class="input-group">
+                <label for="mode-select">Scala / Modo</label>
+                <div class="select-wrapper">
+                    <select id="mode-select">
+                        <option value="ionian">Ionio (Maggiore Naturale)</option>
+                        <option value="dorian">Dorico (Minore con 6a Maj)</option>
+                        <option value="phrygian">Frigio (Minore con 2a Min)</option>
+                        <option value="lydian">Lidio (Maggiore con 4a Aum)</option>
+                        <option value="mixolydian">Misolidio (Maggiore con 7a Min)</option>
+                        <option value="aeolian">Eolio (Minore Naturale)</option>
+                        <option value="locrian">Locrio (Diminuito)</option>
+                        <option value="harmonic_minor">Minore Armonica</option>
+                    </select>
+                </div>
+            </div>
                 <div class="input-group">
                     <label for="clef-select">Chiave</label>
                     <div class="select-wrapper">
@@ -43,16 +57,45 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="input-group">
+                    <label for="accidental-select">Notazione Alterazioni</label>
+                    <div class="select-wrapper">
+                        <select id="accidental-select">
+                            <option value="sharp">Diesis (#)</option>
+                            <option value="flat">Bemolle (♭)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="tuning-select">Visualizzazione</label>
+                    <div class="select-wrapper">
+                        <select id="tuning-select">
+                            <option value="notes">Pentagramma Standard</option>
+                            <option value="E,A,D,G,B,E">TAB Chitarra (Standard: E A D G B E)</option>
+                            <option value="D,A,D,G,B,E">TAB Chitarra (Drop D: D A D G B E)</option>
+                            <option value="E,A,D,G">TAB Basso (Standard: E A D G)</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="presets-wrapper">
                 <span class="label-title">Preset Rapidi:</span>
-                <div class="presets-group">
-                    <button class="btn btn-preset" data-preset="ii,V,I">ii - V - I</button>
-                    <button class="btn btn-preset" data-preset="I,V,vi,IV">I - V - vi - IV</button>
-                    <button class="btn btn-preset" data-preset="I,bVII,bVI,V">I - bVII - bVI - V</button>
-                    <button id="clear-btn" class="btn btn-preset btn-outline">Pulisci</button>
-                </div>
+                <div class="preset-group">
+                <button class="btn btn-preset" data-preset="pop">Pop</button>
+                <button class="btn btn-preset" data-preset="jazz">Jazz</button>
+                <button class="btn btn-preset" data-preset="blues">Blues</button>
+                <button class="btn btn-preset" data-preset="epic">Epico</button>
+                <button class="btn btn-preset" data-preset="metal">Metal</button>
+                <button class="btn btn-preset" data-preset="ballad">Ballad</button>
+                <button class="btn btn-preset" data-preset="punk">Punk</button>
+                <button class="btn btn-preset" data-preset="soul">Soul</button>
+                <button class="btn btn-preset" data-preset="classico">Classico</button>
+            
+                <button id="clear-btn" class="btn btn-preset btn-outline">Pulisci</button>
+            </div>
             </div>
 
             <div id="chords-container" class="chords-container"></div>
@@ -66,6 +109,6 @@
         <section id="sheets-container" class="sheets-container"></section>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>

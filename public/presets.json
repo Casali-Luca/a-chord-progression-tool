@@ -1,0 +1,90 @@
+{
+  "ionian": {
+    "pop":      [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 4, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 3, "type": 0 }],
+    "jazz":     [{ "degreeIdx": 1, "type": 1 }, { "degreeIdx": 4, "type": 1 }, { "degreeIdx": 0, "type": 2 }],
+    "blues":    [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 1 }, { "degreeIdx": 0, "type": 1 }, { "degreeIdx": 4, "type": 1 }],
+    "epic":     [{ "degreeIdx": 5, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 0, "type": 0 }, { "degreeIdx": 4, "type": 0 }],
+    "metal":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 4, "type": 0 }],
+    "ballad":   [{ "degreeIdx": 0, "type": 2 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 4, "type": 1 }],
+    "punk":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 4, "type": 0 }],
+    "soul":     [{ "degreeIdx": 0, "type": 2 }, { "degreeIdx": 3, "type": 2 }, { "degreeIdx": 1, "type": 1 }, { "degreeIdx": 4, "type": 1 }],
+    "classico": [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 4, "type": 1 }, { "degreeIdx": 0, "type": 0 }]
+  },
+  "dorian": {
+    "pop":      [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }],
+    "jazz":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 1 }, { "degreeIdx": 6, "type": 0 }],
+    "blues":    [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 1 }, { "degreeIdx": 0, "type": 1 }],
+    "epic":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 2, "type": 0 }, { "degreeIdx": 3, "type": 0 }],
+    "metal":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 5, "type": 0 }],
+    "ballad":   [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 2, "type": 2 }, { "degreeIdx": 3, "type": 0 }],
+    "punk":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 3, "type": 0 }],
+    "soul":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 1 }],
+    "classico": [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 4, "type": 0 }]
+  },
+  "aeolian": {
+    "pop":      [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "jazz":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 1 }, { "degreeIdx": 1, "type": 1 }],
+    "blues":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "epic":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 2, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "metal":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "ballad":   [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "punk":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "soul":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 1 }, { "degreeIdx": 5, "type": 2 }],
+    "classico": [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 4, "type": 0 }, { "degreeIdx": 0, "type": 0 }]
+  },
+  "mixolydian": {
+    "pop":      [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 3, "type": 0 }],
+    "jazz":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 1 }, { "degreeIdx": 1, "type": 1 }],
+    "blues":    [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 1 }, { "degreeIdx": 6, "type": 0 }],
+    "epic":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 0, "type": 0 }],
+    "metal":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "ballad":   [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "punk":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 3, "type": 0 }],
+    "soul":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 3, "type": 2 }],
+    "classico": [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 4, "type": 0 }, { "degreeIdx": 6, "type": 0 }]
+  },
+  "phrygian": {
+    "pop":      [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "jazz":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 1, "type": 2 }],
+    "blues":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "epic":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 6, "type": 0 }, { "degreeIdx": 5, "type": 0 }],
+    "metal":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 0, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "ballad":   [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "punk":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "soul":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 1, "type": 2 }, { "degreeIdx": 3, "type": 0 }],
+    "classico": [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 4, "type": 0 }]
+  },
+  "lydian": {
+    "pop":      [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "jazz":     [{ "degreeIdx": 0, "type": 2 }, { "degreeIdx": 1, "type": 0 }],
+    "blues":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 4, "type": 0 }],
+    "epic":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 4, "type": 0 }],
+    "metal":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 3, "type": 0 }],
+    "ballad":   [{ "degreeIdx": 0, "type": 2 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 5, "type": 0 }],
+    "punk":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "soul":     [{ "degreeIdx": 0, "type": 2 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 4, "type": 2 }],
+    "classico": [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 4, "type": 0 }, { "degreeIdx": 1, "type": 0 }]
+  },
+  "locrian": {
+    "pop":      [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "jazz":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 1, "type": 2 }],
+    "blues":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }],
+    "epic":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 2, "type": 0 }],
+    "metal":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }, { "degreeIdx": 4, "type": 0 }],
+    "ballad":   [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 2, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "punk":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 1, "type": 0 }],
+    "soul":     [{ "degreeIdx": 0, "type": 1 }, { "degreeIdx": 3, "type": 0 }],
+    "classico": [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 4, "type": 0 }, { "degreeIdx": 1, "type": 0 }]
+  },
+  "harmonic_minor": {
+    "pop":      [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 4, "type": 1 }],
+    "jazz":     [{ "degreeIdx": 1, "type": 1 }, { "degreeIdx": 4, "type": 1 }, { "degreeIdx": 0, "type": 0 }],
+    "blues":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 4, "type": 1 }],
+    "epic":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 4, "type": 1 }, { "degreeIdx": 6, "type": 0 }],
+    "metal":    [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 4, "type": 1 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 6, "type": 0 }],
+    "ballad":   [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 4, "type": 1 }],
+    "punk":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 5, "type": 0 }, { "degreeIdx": 4, "type": 0 }],
+    "soul":     [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 1 }, { "degreeIdx": 4, "type": 1 }],
+    "classico": [{ "degreeIdx": 0, "type": 0 }, { "degreeIdx": 3, "type": 0 }, { "degreeIdx": 4, "type": 1 }, { "degreeIdx": 0, "type": 0 }]
+  }
+}
