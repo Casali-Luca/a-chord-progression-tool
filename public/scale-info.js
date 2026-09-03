@@ -67,20 +67,34 @@ export function renderScaleMiniSheet(
     renderFretboardSVG(document.getElementById(`${containerId}-slide-4`), scaleNotes, [4, 9, 2, 7, 11, 4], 12, true);
     renderFretboardSVG(document.getElementById(`${containerId}-slide-5`), scaleNotes, [4, 9, 2, 7], 12, false);
     new Swiper(swiperEl, {
-        slidesPerView: 1,
-        spaceBetween: 10,
-        pagination: {
-            el: pagination,
-            clickable: true,
-        },
-    });
+    slidesPerView: 1,
+    spaceBetween: 10,
+    observer: true,
+    observeParents: true,
+    pagination: {
+        el: pagination,
+        clickable: true,
+    },
+});
 }
 function renderVexflowSlide(targetEl, scaleNotes, tMode, selectedClef, VF, noteToPitch) {
+    if (!targetEl) return;
+    const rawWidth = targetEl.clientWidth || 420;
+    const width = Math.min(rawWidth, 480); 
+    const staveWidth = width - 20;
     const renderer = new VF.Renderer(targetEl, VF.Renderer.Backends.SVG);
-    renderer.resize(420, 120);
+    renderer.resize(width, 120);
     const context = renderer.getContext();
+    const svgEl = targetEl.querySelector('svg');
+    if (svgEl) {
+        svgEl.setAttribute('viewBox', `0 0 ${width} 120`);
+        svgEl.style.width = '100%';
+        svgEl.style.maxWidth = `${width}px`;
+        svgEl.style.height = 'auto';
+        svgEl.style.margin = '0 auto';
+    }
     if (tMode === 'notes') {
-        const stave = new VF.Stave(10, 0, 400);
+        const stave = new VF.Stave(10, 0, staveWidth);
         stave.addClef(selectedClef).setContext(context).draw();
         const vexNotes = scaleNotes.map(nObj => {
             const sn = new VF.StaveNote({ keys: [nObj.key], duration: "q", clef: selectedClef });
@@ -91,14 +105,14 @@ function renderVexflowSlide(targetEl, scaleNotes, tMode, selectedClef, VF, noteT
         voice.addTickables(vexNotes);
         const formatter = new VF.Formatter();
         if (typeof formatter.joinAndFormat === 'function') {
-            formatter.joinAndFormat([voice], 320);
+            formatter.joinAndFormat([voice], staveWidth - 50);
         } else {
-            formatter.format([voice], 320);
+            formatter.format([voice], staveWidth - 50);
         }
         voice.draw(context, stave);
     } else {
         const strings = tMode.split(',');
-        const tabStave = new VF.TabStave(10, 0, 400);
+        const tabStave = new VF.TabStave(10, 0, staveWidth);
         tabStave.setNumLines(strings.length);
         tabStave.setContext(context).draw();
         const vexTabNotes = scaleNotes.map(nObj => {
@@ -110,16 +124,15 @@ function renderVexflowSlide(targetEl, scaleNotes, tMode, selectedClef, VF, noteT
         voice.addTickables(vexTabNotes);
         const formatter = new VF.Formatter();
         if (typeof formatter.joinAndFormat === 'function') {
-            formatter.joinAndFormat([voice], 320);
+            formatter.joinAndFormat([voice], staveWidth - 50);
         } else {
-            formatter.format([voice], 320);
+            formatter.format([voice], staveWidth - 50);
         }
         voice.draw(context, tabStave);
     }
 }
 function renderPianoSVG(container, scaleNotes) {
-    let svg = `<svg viewBox="0 0 420 130" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">`;
-    const activePitches = new Set(scaleNotes.map(n => n.pitchIndex));
+    let svg = `<svg viewBox="0 0 350 140" xmlns="http://www.w3.org/2000/svg">`;    const activePitches = new Set(scaleNotes.map(n => n.pitchIndex));
     const colors = {
         whiteKeyBg: '#222222',          
         whiteKeyActive: '#dcd6cd',      
@@ -130,9 +143,9 @@ function renderPianoSVG(container, scaleNotes) {
         indicatorActive: '#8c4227'     
     };
     const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
-    const whiteWidth = 46;
-    const startX = 25;
-    const blackWidth = 26;
+    const whiteWidth = 42;
+    const startX = 28;
+    const blackWidth = 22;
     const blackKeys = [
         { p: 1,  x: startX + whiteWidth * 1 - (blackWidth / 2) }, 
         { p: 3,  x: startX + whiteWidth * 2 - (blackWidth / 2) }, 
@@ -144,17 +157,17 @@ function renderPianoSVG(container, scaleNotes) {
         const isHighlighted = activePitches.has(pitch);
         const x = startX + i * whiteWidth;
         const fill = isHighlighted ? colors.whiteKeyActive : colors.whiteKeyBg;
-        svg += `<rect x="${x}" y="10" width="${whiteWidth - 2}" height="105" fill="${fill}" stroke="${colors.whiteStroke}" stroke-width="1.5" rx="3"/>`;
+        svg += `<rect x="${x}" y="15" width="${whiteWidth - 2}" height="110" fill="${fill}" stroke="${colors.whiteStroke}" stroke-width="1.5" rx="3"/>`;
         if (isHighlighted) {
-            svg += `<circle cx="${x + (whiteWidth - 2) / 2}" cy="98" r="4" fill="${colors.indicatorActive}"/>`;
+            svg += `<circle cx="${x + (whiteWidth - 2) / 2}" cy="108" r="4" fill="${colors.indicatorActive}"/>`;
         }
     });
     blackKeys.forEach(k => {
         const isHighlighted = activePitches.has(k.p);
         const fill = isHighlighted ? colors.blackKeyActive : colors.blackKeyBg;
-        svg += `<rect x="${k.x}" y="10" width="${blackWidth}" height="65" fill="${fill}" stroke="${colors.blackStroke}" stroke-width="1" rx="2"/>`;
+        svg += `<rect x="${k.x}" y="15" width="${blackWidth}" height="68" fill="${fill}" stroke="${colors.blackStroke}" stroke-width="1" rx="2"/>`;
         if (isHighlighted) {
-            svg += `<circle cx="${k.x + blackWidth / 2}" cy="60" r="3.5" fill="${colors.indicatorActive}"/>`;
+            svg += `<circle cx="${k.x + blackWidth / 2}" cy="68" r="3.5" fill="${colors.indicatorActive}"/>`;
         }
     });
     svg += `</svg>`;
@@ -164,37 +177,39 @@ function renderFretboardSVG(container, scaleNotes, stringTunings, numFrets = 12,
     const pitchToNoteMap = {};
     scaleNotes.forEach(n => { pitchToNoteMap[n.pitchIndex] = n.name; });
     const numStrings = stringTunings.length;
-    const width = 390;
-    const height = 100;
+    const width = 380;
+    const height = 90;
+    const startX = 20;
+    const startY = 25;
     const fretWidth = width / numFrets;
-    const stringSpacing = height / (numStrings + 1);
-    const noteRadius = isGuitar ? 6.5 : 8.5;
-    const fontSize = isGuitar ? 7 : 8.5;
-    let svg = `<svg viewBox="0 0 420 130" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">`;
+    const stringSpacing = height / (numStrings > 1 ? numStrings - 1 : 1);
+    const noteRadius = isGuitar ? 7 : 8.5;
+    const fontSize = isGuitar ? 7.5 : 9;
+    let svg = `<svg viewBox="0 0 420 140" xmlns="http://www.w3.org/2000/svg">`;
     const singleInlays = [3, 5, 7, 9];
     singleInlays.forEach(fret => {
-        const cx = (fret - 0.5) * fretWidth + 15;
-        svg += `<circle cx="${cx}" cy="${height / 2 + 10}" r="3" fill="#444444"/>`;
+        const cx = (fret - 0.5) * fretWidth + startX;
+        svg += `<circle cx="${cx}" cy="${startY + height / 2}" r="3" fill="#444444"/>`;
     });
-    const cx12 = (12 - 0.5) * fretWidth + 15;
-    svg += `<circle cx="${cx12}" cy="${height / 2 - 5}" r="3" fill="#444444"/>`;
-    svg += `<circle cx="${cx12}" cy="${height / 2 + 25}" r="3" fill="#444444"/>`;
+    const cx12 = (12 - 0.5) * fretWidth + startX;
+    svg += `<circle cx="${cx12}" cy="${startY + height / 2 - 12}" r="3" fill="#444444"/>`;
+    svg += `<circle cx="${cx12}" cy="${startY + height / 2 + 12}" r="3" fill="#444444"/>`;
     for (let i = 0; i <= numFrets; i++) {
-        const x = i * fretWidth + 15;
+        const x = i * fretWidth + startX;
         const strokeWidth = i === 0 ? 4 : 1;
         const color = i === 0 ? '#ffffff' : '#333333';
-        svg += `<line x1="${x}" y1="10" x2="${x}" y2="${height + 10}" stroke="${color}" stroke-width="${strokeWidth}"/>`;
+        svg += `<line x1="${x}" y1="${startY}" x2="${x}" y2="${startY + height}" stroke="${color}" stroke-width="${strokeWidth}"/>`;
     }
     stringTunings.forEach((openPitch, sIdx) => {
-        const y = (sIdx + 1) * stringSpacing + 10;
-        svg += `<line x1="15" y1="${y}" x2="${width + 15}" y2="${y}" stroke="#666666" stroke-width="${1 + sIdx * 0.4}"/>`;
+        const y = startY + (sIdx * stringSpacing);
+        svg += `<line x1="${startX}" y1="${y}" x2="${width + startX}" y2="${y}" stroke="#666666" stroke-width="${1 + sIdx * 0.4}"/>`;
         for (let fret = 0; fret <= numFrets; fret++) {
             const currentPitch = (openPitch + fret) % 12;
             const noteName = pitchToNoteMap[currentPitch];
             if (noteName !== undefined) {
-                const cx = fret === 0 ? 15 : (fret - 0.5) * fretWidth + 15;
-                svg += `<circle cx="${cx}" cy="${y}" r="${noteRadius}" fill="#ffffff" stroke="#000000" stroke-width="1"/>`;
-                svg += `<text x="${cx}" y="${y + (isGuitar ? 2.5 : 3)}" font-size="${fontSize}" font-weight="bold" fill="#000000" text-anchor="middle">${noteName}</text>`;
+                const cx = fret === 0 ? startX : (fret - 0.5) * fretWidth + startX;
+                svg += `<circle cx="${cx}" cy="${y}" r="${noteRadius}" fill="#ffffff" stroke="#000000" stroke-width="1.2"/>`;
+                svg += `<text x="${cx}" y="${y + (isGuitar ? 2.5 : 3)}" font-size="${fontSize}" font-weight="bold" fill="#000000" text-anchor="middle" dominant-baseline="central">${noteName}</text>`;
             }
         }
     });

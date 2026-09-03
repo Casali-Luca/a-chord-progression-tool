@@ -299,3 +299,27 @@ select:focus, select:hover {
     max-width: 100%;
     height: 100%;
 }
+
+
+.mini-scale-swiper {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.mini-scale-swiper .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.mini-scale-swiper svg {
+    width: 100%;
+    max-width: 480px; 
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
