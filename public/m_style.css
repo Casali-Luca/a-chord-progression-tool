@@ -1,0 +1,147 @@
+:root {
+    --bg-color: #0d0d0d;
+    --panel-bg: #141414;
+    --border-color: #2a2a2a;
+    --border-focus: #ffffff;
+    --text-color: #f4f4f4;
+    --text-muted: #888888;
+    --accent-color: #ffffff;
+    --font-serif: "Playfair Display", "Times New Roman", Georgia, serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-sans);
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 28px;
+    text-align: center;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    line-height: 1.5;
+}
+.control-group {
+    margin: 24px 0;
+}
+label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 8px;
+}
+input[type="number"], select {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+}
+input[type="number"] {
+    width: 90px;
+}
+select {
+    width: auto;
+    min-width: 120px;
+    appearance: none;
+    -webkit-appearance: none;
+}
+input[type="number"]:focus, input[type="number"]:hover,
+select:focus, select:hover {
+    border-color: var(--border-focus);
+}
+.slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+.accent-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+}
+.accent-btn {
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    transition: var(--transition);
+}
+.accent-btn:hover {
+    border-color: var(--border-focus);
+}
+.accent-btn.high { 
+    background-color: #2a2a2a; 
+    border-color: var(--text-color);
+    color: var(--text-color);
+}
+.accent-btn.low { 
+    background-color: transparent; 
+    border-color: var(--border-color);
+    color: var(--text-muted);
+}
+.accent-btn.mute { 
+    background-color: transparent; 
+    border-color: transparent;
+    color: #444444;
+}
+.accent-btn.active {
+    transform: scale(1.1);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+button#startStop {
+    padding: 12px 28px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background-color: var(--accent-color);
+    color: #000000;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: var(--transition);
+}
+button#startStop:hover {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+}
+button#startStop.running {
+    background-color: transparent;
+    color: #ff4d4d;
+    border-color: #ff4d4d;
+}
+button#startStop.running:hover {
+    background-color: rgba(255, 77, 77, 0.1);
+}

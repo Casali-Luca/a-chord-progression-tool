@@ -6,6 +6,7 @@
     <title>Progressione Accordi</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
 
@@ -83,18 +84,17 @@
             <div class="presets-wrapper">
                 <span class="label-title">Preset Rapidi:</span>
                 <div class="preset-group">
-                <button class="btn btn-preset" data-preset="pop">Pop</button>
-                <button class="btn btn-preset" data-preset="jazz">Jazz</button>
-                <button class="btn btn-preset" data-preset="blues">Blues</button>
-                <button class="btn btn-preset" data-preset="epic">Epico</button>
-                <button class="btn btn-preset" data-preset="metal">Metal</button>
-                <button class="btn btn-preset" data-preset="ballad">Ballad</button>
-                <button class="btn btn-preset" data-preset="punk">Punk</button>
-                <button class="btn btn-preset" data-preset="soul">Soul</button>
-                <button class="btn btn-preset" data-preset="classico">Classico</button>
-            
-                <button id="clear-btn" class="btn btn-preset btn-outline">Pulisci</button>
-            </div>
+                    <button class="btn btn-preset" data-preset="pop">Pop</button>
+                    <button class="btn btn-preset" data-preset="jazz">Jazz</button>
+                    <button class="btn btn-preset" data-preset="blues">Blues</button>
+                    <button class="btn btn-preset" data-preset="epic">Epico</button>
+                    <button class="btn btn-preset" data-preset="metal">Metal</button>
+                    <button class="btn btn-preset" data-preset="ballad">Ballad</button>
+                    <button class="btn btn-preset" data-preset="punk">Punk</button>
+                    <button class="btn btn-preset" data-preset="soul">Soul</button>
+                    <button class="btn btn-preset" data-preset="classico">Classico</button>
+                    <button id="clear-btn" class="btn btn-preset btn-outline">Pulisci</button>
+                </div>
             </div>
 
             <div id="chords-container" class="chords-container"></div>
@@ -106,6 +106,8 @@
         </section>
 
         <section id="sheets-container" class="sheets-container"></section>
+
+        <button onclick="window.location.href='metronome.html'" class="btn btn-preset"> Metronomo</button>
     </main>
 
     <script src="script.js" type="module"></script>

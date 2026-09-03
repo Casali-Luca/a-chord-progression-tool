@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metronomo Web Audio</title>
+  <link rel="stylesheet" href="m_style.css">
+</head>
+<body>
+  <h1>Metronomo</h1>
+  <div class="control-group">
+    <label for="bpm">BPM: <span id="bpmVal">120</span></label>
+    <div class="slider-container">
+      <span>30</span>
+      <input type="range" id="bpm" min="30" max="240" value="120">
+      <span>240</span>
+    </div>
+  </div>
+  <div class="control-group">
+    <label>Tempo (Numeratore / Denominatore)</label>
+    <input type="number" id="beats" value="9" min="1" max="32">
+    /
+    <select id="base">
+      <option value="4">4</option>
+      <option value="8" selected>8</option>
+      <option value="16">16</option>
+    </select>
+  </div>
+  <div class="control-group">
+    <div id="accentGrid" class="accent-grid"></div>
+  </div>
+  <button id="startStop">Start</button>
+    <script src="m_script.js" type="module"></script>
+</body>
+</html>
