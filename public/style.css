@@ -346,3 +346,85 @@ select:focus, select:hover {
     margin-bottom: 15px;
     align-self: flex-end;
 }
+
+.zoom-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    background: rgba(20, 20, 20, 0.8);
+    color: var(--text-color, #ffffff);
+    border: 1px solid var(--border-color, #333333);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.zoom-btn:hover {
+    background: var(--text-color, #ffffff);
+    color: #000000;
+}
+
+.zoom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.zoom-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.zoom-modal-content {
+    background-color: var(--panel-bg, #141414);
+    border: 1px solid var(--border-color, #333333);
+    border-radius: 8px;
+    padding: 24px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.zoom-modal-content svg {
+    width: 100%;
+    height: auto;
+    max-height: 75vh;
+}
+
+.zoom-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--text-color, #ffffff);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.mini-scale-swiper svg rect[fill="#ffffff"],
+.mini-scale-swiper svg rect[fill="white"],
+.zoom-modal-content svg rect[fill="#ffffff"],
+.zoom-modal-content svg rect[fill="white"] {
+    display: none;
+}

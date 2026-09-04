@@ -1,7 +1,7 @@
 let audioCtx = null;
 let bpm = 120;
-let beatsPerMeasure = 9;
-let timeSignatureBase = 8;
+let beatsPerMeasure = 4;
+let timeSignatureBase = 4;
 let currentBeat = 0;
 let isRunning = false;
 let timerId = null;
@@ -117,3 +117,12 @@ bpmPlusBtn.addEventListener('click', () => {
   setBpm(bpm + 1);
 });startStopBtn.onclick = toggleMetronome;
 updateAccentGrid();
+beatsInput.addEventListener('change', () => {
+    let val = parseInt(beatsInput.value) || 1;
+    beatsInput.value = Math.min(Math.max(val, 1), 32);
+    updateAccentGrid();
+});
+
+baseInput.addEventListener('change', (e) => {
+    timeSignatureBase = parseInt(e.target.value);
+});
