@@ -82,15 +82,38 @@ function toggleMetronome() {
     nextTick();
     }
 }
-bpmInput.oninput = (e) => {
-    bpm = parseInt(e.target.value);
-    bpmVal.innerText = bpm;
-};
-beatsInput.onchange = () => {
-    updateAccentGrid();
-};
-baseInput.onchange = (e) => {
-    timeSignatureBase = parseInt(e.target.value);
-};
-startStopBtn.onclick = toggleMetronome;
+const bpmRange = document.getElementById('bpm');
+const bpmNumInput = document.getElementById('bpmInput');
+const bpmMinusBtn = document.getElementById('bpmMinus');
+const bpmPlusBtn = document.getElementById('bpmPlus');
+
+function setBpm(val) {
+
+  let newBpm = Math.min(Math.max(parseInt(val) || 30, 30), 240);
+  bpm = newBpm;
+  bpmRange.value = newBpm;
+  bpmNumInput.value = newBpm;
+}
+
+bpmRange.addEventListener('input', (e) => {
+  setBpm(e.target.value);
+});
+
+bpmNumInput.addEventListener('input', (e) => {
+  const val = parseInt(e.target.value);
+  if (!isNaN(val)) {
+    bpm = Math.min(Math.max(val, 30), 240);
+    bpmRange.value = bpm;
+  }
+});
+
+bpmNumInput.addEventListener('blur', () => {
+  setBpm(bpmNumInput.value);
+});
+bpmMinusBtn.addEventListener('click', () => {
+  setBpm(bpm - 1);
+});
+bpmPlusBtn.addEventListener('click', () => {
+  setBpm(bpm + 1);
+});startStopBtn.onclick = toggleMetronome;
 updateAccentGrid();
