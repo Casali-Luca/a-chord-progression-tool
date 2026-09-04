@@ -323,3 +323,26 @@ select:focus, select:hover {
     display: block;
     margin: 0 auto;
 }
+.sheets-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.sheets-container.grid-view {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+@media (max-width: 768px) {
+    .sheets-container.grid-view {
+        grid-template-columns: 1fr;
+    }
+}
+.view-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    align-self: flex-end;
+}

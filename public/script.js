@@ -272,4 +272,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
+    const toggleViewBtn = document.getElementById('toggleViewBtn');
+    const viewIcon = document.getElementById('viewIcon');
+    const savedView = localStorage.getItem('sheetsViewMode') || 'list';
+    if (savedView === 'grid') {
+        sheetsContainer.classList.add('grid-view');
+        if (viewIcon) viewIcon.textContent = '⊞';
+    } else {
+        if (viewIcon) viewIcon.textContent = '☰';
+    }
+
+    if (toggleViewBtn) {
+        toggleViewBtn.addEventListener('click', () => {
+            const isGrid = sheetsContainer.classList.toggle('grid-view');
+            
+            if (viewIcon) {
+                viewIcon.textContent = isGrid ? '⊞' : '☰';
+            }
+            
+            localStorage.setItem('sheetsViewMode', isGrid ? 'grid' : 'list');
+        });
+    }
 });
