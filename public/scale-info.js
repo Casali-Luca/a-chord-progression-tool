@@ -1,6 +1,52 @@
 import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.mjs';
 import { getTabPositionsHumanized } from './tablature.js';
 
+const NOTE_NAMES_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const NOTE_LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+
+function getSpelledNoteName(rootKey, interval, accidentalMode) {
+    const cleanRoot = rootKey.replace(/\d+$/, '');
+    const letterMatch = cleanRoot.match(/^[A-G]/i);
+    if (!letterMatch) return null;
+    
+    const rootLetter = letterMatch[0].toUpperCase();
+    const rootLetterIdx = NOTE_LETTERS.indexOf(rootLetter);
+    const rootPitch = noteToPitchGlobal[cleanRoot];
+    if (rootPitch === undefined) return null;
+
+    const targetPitch = (rootPitch + interval) % 12;
+
+    let targetLetterIdx = -1;
+    if (interval === 0) targetLetterIdx = rootLetterIdx;
+    else if (interval === 1 || interval === 2) targetLetterIdx = (rootLetterIdx + 1) % 7;
+    else if (interval === 3 || interval === 4) targetLetterIdx = (rootLetterIdx + 2) % 7;
+    else if (interval === 5 || interval === 6) targetLetterIdx = (rootLetterIdx + 3) % 7;
+    else if (interval === 7 || interval === 8) targetLetterIdx = (rootLetterIdx + 4) % 7;
+    else if (interval === 9 || interval === 10) targetLetterIdx = (rootLetterIdx + 5) % 7;
+    else if (interval === 11) targetLetterIdx = (rootLetterIdx + 6) % 7;
+
+    const targetLetter = NOTE_LETTERS[targetLetterIdx];
+    const basePitches = { 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11 };
+    const basePitch = basePitches[targetLetter];
+
+    let diff = (targetPitch - basePitch) % 12;
+    if (diff > 6) diff -= 12;
+    if (diff < -6) diff += 12;
+
+    if (diff === 0) return targetLetter;
+    if (diff === 1) return targetLetter + '#';
+    if (diff === 2) return targetLetter + '##';
+    if (diff === -1) return targetLetter + 'b';
+    if (diff === -2) return targetLetter + 'bb';
+
+    const pitchMap = (accidentalMode === 'flat') ? pitchToVexFlatGlobal : pitchToVexSharpGlobal;
+    return pitchMap[targetPitch];
+}
+
+let noteToPitchGlobal = {};
+let pitchToVexSharpGlobal = {};
+let pitchToVexFlatGlobal = {};
+
 function ensureZoomModal() {
     let modal = document.getElementById('global-zoom-modal');
     if (!modal) {
@@ -38,31 +84,51 @@ export function renderScaleMiniSheet(
     noteToPitch, 
     pitchToVexSharp, 
     pitchToVexFlat, 
-    modeDefinitions
+    modeDefinitions,
+    degreeIndex = 0
 ) {
+    noteToPitchGlobal = noteToPitch;
+    pitchToVexSharpGlobal = pitchToVexSharp;
+    pitchToVexFlatGlobal = pitchToVexFlat;
+
     const mainContainer = document.getElementById(containerId);
     if (!mainContainer) return;
     mainContainer.innerHTML = '';
 
     const modeData = modeDefinitions[selectedModeKey] || modeDefinitions.ionian;
     const rootP = noteToPitch[rootKey] ?? 0;
-    const pitchMap = (accidentalMode === 'flat') ? pitchToVexFlat : pitchToVexSharp;
+    const currentDegreeInfo = modeData.degrees ? modeData.degrees[degreeIndex] : null;
+    const degreeSemiShift = currentDegreeInfo ? currentDegreeInfo.semi : 0;
 
     let currentOctave = baseOctave;
     let prevPitchValue = -1;
 
-    const scaleNotes = modeData.intervals.map(interval => {
-        const absPitch = rootP + interval;
+    const rootLetter = rootKey.charAt(0).toUpperCase();
+    const rootLetterIdx = NOTE_LETTERS.indexOf(rootLetter);
+
+    const scaleNotes = modeData.intervals.map((interval, idx) => {
+        const absPitch = rootP + degreeSemiShift + interval;
         const noteIdx = absPitch % 12;
-        const rawNote = pitchMap[noteIdx];
-        if (prevPitchValue !== -1 && noteIdx < prevPitchValue) {
-            currentOctave++;
+        
+        let rawNote = getSpelledNoteName(rootKey, interval + degreeSemiShift, accidentalMode);
+        if (!rawNote) {
+            const pitchMap = (accidentalMode === 'flat') ? pitchToVexFlat : pitchToVexSharp;
+            rawNote = pitchMap[noteIdx];
         }
-        prevPitchValue = noteIdx;
+
+        const noteLetter = rawNote.charAt(0).toUpperCase();
+        const currentLetterIdx = NOTE_LETTERS.indexOf(noteLetter);
+        
+        const octaveOffset = Math.floor((rootLetterIdx + idx) / 7);
+        const calculatedOctave = baseOctave + octaveOffset;
 
         let accidental = null;
-        if (rawNote.includes('#')) {
+        if (rawNote.includes('##')) {
+            accidental = '##';
+        } else if (rawNote.includes('#')) {
             accidental = '#';
+        } else if (rawNote.includes('bb')) {
+            accidental = 'bb';
         } else if (rawNote.length > 1 && rawNote.endsWith('b')) {
             accidental = 'b';
         }
@@ -71,8 +137,8 @@ export function renderScaleMiniSheet(
             pitchIndex: noteIdx,
             absolutePitch: absPitch,
             name: rawNote.toUpperCase(),
-            key: `${rawNote}/${currentOctave}`,
-            octave: currentOctave,
+            key: `${rawNote.toLowerCase()}/${calculatedOctave}`,
+            octave: calculatedOctave,
             accidental: accidental
         };
     });
@@ -124,36 +190,36 @@ export function renderScaleMiniSheet(
     });
 
     zoomBtn.addEventListener('click', () => {
-    const activeSlideIndex = swiperInstance.activeIndex;
-    const activeSlide = document.getElementById(`${containerId}-slide-${activeSlideIndex}`);
-    if (!activeSlide) return;
+        const activeSlideIndex = swiperInstance.activeIndex;
+        const activeSlide = document.getElementById(`${containerId}-slide-${activeSlideIndex}`);
+        if (!activeSlide) return;
 
-    const svgEl = activeSlide.querySelector('svg');
-    if (svgEl) {
-        const modal = ensureZoomModal();
-        const modalBody = modal.querySelector('#zoom-modal-body');
-        modalBody.innerHTML = '';
+        const svgEl = activeSlide.querySelector('svg');
+        if (svgEl) {
+            const modal = ensureZoomModal();
+            const modalBody = modal.querySelector('#zoom-modal-body');
+            modalBody.innerHTML = '';
 
-        const svgClone = svgEl.cloneNode(true);
-        svgClone.style.maxWidth = '100%';
-        svgClone.style.height = 'auto';
+            const svgClone = svgEl.cloneNode(true);
+            svgClone.style.maxWidth = '100%';
+            svgClone.style.height = 'auto';
 
-        if (activeSlideIndex <= 2) {
-            svgClone.style.color = '#ffffff';
-            const styleEl = document.createElement('style');
-            styleEl.textContent = `
-                #zoom-modal-body svg * {
-                    fill: #ffffff !important;
-                    stroke: #ffffff !important;
-                }
-            `;
-            modalBody.appendChild(styleEl);
+            if (activeSlideIndex <= 2) {
+                svgClone.style.color = '#ffffff';
+                const styleEl = document.createElement('style');
+                styleEl.textContent = `
+                    #zoom-modal-body svg * {
+                        fill: #ffffff !important;
+                        stroke: #ffffff !important;
+                    }
+                `;
+                modalBody.appendChild(styleEl);
+            }
+
+            modalBody.appendChild(svgClone);
+            modal.classList.add('active');
         }
-
-        modalBody.appendChild(svgClone);
-        modal.classList.add('active');
-    }
-});
+    });
 }
 
 function renderVexflowSlide(targetEl, scaleNotes, tMode, selectedClef, VF, noteToPitch) {
@@ -166,7 +232,6 @@ function renderVexflowSlide(targetEl, scaleNotes, tMode, selectedClef, VF, noteT
     renderer.resize(width, 120);
     const context = renderer.getContext();
     
-
     const svgEl = targetEl.querySelector('svg');
     if (svgEl) {
         svgEl.setAttribute('viewBox', `0 0 ${width} 120`);
