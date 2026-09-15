@@ -72,6 +72,17 @@ function ensureZoomModal() {
     return modal;
 }
 
+function getOptimalBaseOctave(startLetter, clef) {
+    const letter = startLetter.toUpperCase();
+    if (clef === 'bass') {
+        return ['F', 'G', 'A', 'B'].includes(letter) ? 2 : 3;
+    } else if (clef === 'alto') {
+        return ['G', 'A', 'B'].includes(letter) ? 3 : 4;
+    } else {
+        return letter === 'B' ? 3 : 4;
+    }
+}
+
 export function renderScaleMiniSheet(
     containerId, 
     rootKey, 
@@ -96,31 +107,38 @@ export function renderScaleMiniSheet(
     mainContainer.innerHTML = '';
 
     const modeData = modeDefinitions[selectedModeKey] || modeDefinitions.ionian;
-    const rootP = noteToPitch[rootKey] ?? 0;
+    const cleanRoot = rootKey.replace(/\d+$/, '');
+    const rootP = noteToPitch[cleanRoot] ?? 0;
     const currentDegreeInfo = modeData.degrees ? modeData.degrees[degreeIndex] : null;
     const degreeSemiShift = currentDegreeInfo ? currentDegreeInfo.semi : 0;
 
-    let currentOctave = baseOctave;
-    let prevPitchValue = -1;
+    const firstInterval = modeData.intervals[0] || 0;
+    const firstShift = firstInterval + degreeSemiShift;
+    let firstRawNote = getSpelledNoteName(cleanRoot, firstShift, accidentalMode);
+    if (!firstRawNote) {
+        const pitchMap = (accidentalMode === 'flat') ? pitchToVexFlat : pitchToVexSharp;
+        firstRawNote = pitchMap[(rootP + firstShift) % 12];
+    }
 
-    const rootLetter = rootKey.charAt(0).toUpperCase();
-    const rootLetterIdx = NOTE_LETTERS.indexOf(rootLetter);
+    const startLetter = firstRawNote.charAt(0).toUpperCase();
+    const startLetterIdx = NOTE_LETTERS.indexOf(startLetter);
+
+    const currentBaseOctave = (baseOctave !== undefined && baseOctave !== null) 
+        ? baseOctave 
+        : getOptimalBaseOctave(startLetter, selectedClef);
 
     const scaleNotes = modeData.intervals.map((interval, idx) => {
-        const absPitch = rootP + degreeSemiShift + interval;
-        const noteIdx = absPitch % 12;
+        const totalShift = interval + degreeSemiShift;
+        const absPitch = (rootP + totalShift) % 12;
         
-        let rawNote = getSpelledNoteName(rootKey, interval + degreeSemiShift, accidentalMode);
+        let rawNote = getSpelledNoteName(cleanRoot, totalShift, accidentalMode);
         if (!rawNote) {
             const pitchMap = (accidentalMode === 'flat') ? pitchToVexFlat : pitchToVexSharp;
-            rawNote = pitchMap[noteIdx];
+            rawNote = pitchMap[absPitch];
         }
 
-        const noteLetter = rawNote.charAt(0).toUpperCase();
-        const currentLetterIdx = NOTE_LETTERS.indexOf(noteLetter);
-        
-        const octaveOffset = Math.floor((rootLetterIdx + idx) / 7);
-        const calculatedOctave = baseOctave + octaveOffset;
+        const octaveOffset = Math.floor((startLetterIdx + idx) / 7);
+        const calculatedOctave = currentBaseOctave + octaveOffset;
 
         let accidental = null;
         if (rawNote.includes('##')) {
@@ -134,8 +152,7 @@ export function renderScaleMiniSheet(
         }
 
         return {
-            pitchIndex: noteIdx,
-            absolutePitch: absPitch,
+            pitchIndex: absPitch,
             name: rawNote.toUpperCase(),
             key: `${rawNote.toLowerCase()}/${calculatedOctave}`,
             octave: calculatedOctave,
@@ -227,22 +244,25 @@ function renderVexflowSlide(targetEl, scaleNotes, tMode, selectedClef, VF, noteT
     const rawWidth = targetEl.clientWidth || 420;
     const width = Math.min(rawWidth, 480); 
     const staveWidth = width - 20;
+    const staveHeight = 130;
 
     const renderer = new VF.Renderer(targetEl, VF.Renderer.Backends.SVG);
-    renderer.resize(width, 120);
+    renderer.resize(width, staveHeight);
     const context = renderer.getContext();
     
     const svgEl = targetEl.querySelector('svg');
     if (svgEl) {
-        svgEl.setAttribute('viewBox', `0 0 ${width} 120`);
+        svgEl.setAttribute('viewBox', `0 0 ${width} ${staveHeight}`);
         svgEl.style.width = '100%';
         svgEl.style.maxWidth = `${width}px`;
         svgEl.style.height = 'auto';
         svgEl.style.margin = '0 auto';
+        svgEl.style.overflow = 'visible'; 
     }
 
     if (tMode === 'notes') {
-        const stave = new VF.Stave(10, 0, staveWidth);
+        
+        const stave = new VF.Stave(10, 25, staveWidth);
         stave.addClef(selectedClef).setContext(context).draw();
 
         const vexNotes = scaleNotes.map(nObj => {
@@ -263,7 +283,7 @@ function renderVexflowSlide(targetEl, scaleNotes, tMode, selectedClef, VF, noteT
         voice.draw(context, stave);
     } else {
         const strings = tMode.split(',');
-        const tabStave = new VF.TabStave(10, 0, staveWidth);
+        const tabStave = new VF.TabStave(10, 20, staveWidth);
         tabStave.setNumLines(strings.length);
         tabStave.setContext(context).draw();
 
